@@ -1,0 +1,21 @@
+;使用Caps切换中英文
+
+SetStoreCapslockMode, off
+Capslock::
+	KeyWait, CapsLock
+	If GetKeyState("CapsLock", "T") = 0
+		If (A_TimeSinceThisHotkey > 300)
+			;大写关闭状态且长按
+			SetTimer, mainp, -1
+		Else
+			;大写关闭状态且短按
+			Send ^{Space}
+	Else
+		If (A_TimeSinceThisHotkey < 300)
+			;大写打开状态且短按
+			SetTimer, mainp, -1
+Return
+
+mainp:
+	Send, {CapsLock}
+Return
