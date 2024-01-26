@@ -1,0 +1,21 @@
+CapsLock::CustomCapsLock()
+
+CustomCapsLock() {
+    static threshold := 300
+    startTime := A_TickCount
+    KeyWait("CapsLock")
+    duration := A_TickCount - startTime
+
+    current := GetKeyState("CapsLock", "T")
+    if (current) {
+        SetCapsLockState(false)
+    }
+    else {
+       if (duration < threshold) {
+            Send("^{Space}")
+        }
+        else {
+            SetCapsLockState(true)
+        }
+    }
+}
