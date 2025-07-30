@@ -1,21 +1,31 @@
+; 管理员运行
+if !A_IsAdmin {
+    Run("*RunAs " . A_ScriptFullPath) 
+    ExitApp
+}
+
+; 高进程
+ProcessSetPriority("High")
+
 CapsLock::CustomCapsLock()
 
 CustomCapsLock() {
-    static threshold := 300
-    startTime := A_TickCount
-    KeyWait("CapsLock")
-    duration := A_TickCount - startTime
+    static threshold := 300 ; 定义长按的阈值为 300 毫秒
+    startTime := A_TickCount ; 按下时的初始时间
+    KeyWait("CapsLock") ; 等待 CapsLock 键释放
+    duration := A_TickCount - startTime ; 计算持续时间
 
     current := GetKeyState("CapsLock", "T")
     if (current) {
-        SetCapsLockState(false)
+        SetCapsLockState(false) ; 如果当前是开启状态，则关闭
     }
     else {
        if (duration < threshold) {
-            Send("^{Space}")
+            ; 短按情况，发送 Ctrl+]
+            Send("^+]")
         }
         else {
-            SetCapsLockState(true)
+            SetCapsLockState(true) ; 如果当前是关闭状态，则开启
         }
     }
 }
